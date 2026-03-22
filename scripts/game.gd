@@ -4,8 +4,11 @@ var game_window : Vector2i = DisplayServer.window_get_size()
 var asteroid_count : int = 0
 var asteroid_scene = preload("res://scenes/asteroid.tscn")
 var ship_scene = preload("res://scenes/ship.tscn")
+var ship : Ship
 
-var bounding_box = [-32, 1232, -32, 732] #min x, max x, min y, max y
+@onready var hud: HUD = $HUD
+
+var bounding_box = [-32, 1232, 32, 732] #min x, max x, min y, max y
 @onready var spawn_timer: Timer = $SpawnTimer
 
 func _ready() -> void:
@@ -15,6 +18,10 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	check_bounding()
+	if is_instance_valid(ship):
+		hud.update_hud_labels(ship.score, ship.health)
+	else:
+		hud.update_hud_health(0)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("spawn_asteroid"):
@@ -64,9 +71,13 @@ func check_bounding() -> void:
 		bullet.bound(bounding_box)
 		
 func spawn_ship(spawn_location : Vector2i) -> void:
-	var ship = ship_scene.instantiate()
+	for each in get_node("BulletContainer").get_children():
+		each.die()
+	
+	ship = ship_scene.instantiate()
 	get_node("ShipContainer").add_child(ship)
 	ship.global_position = spawn_location
+	hud.update_hud_labels(ship.score, ship.health)
 
 
 func _on_spawn_timer_timeout() -> void:

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ba43v52yoyorm"]
+[gd_scene load_steps=4 format=3 uid="uid://ba43v52yoyorm"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_r454x"]
-[ext_resource type="Texture2D" uid="uid://dllug8ge8i5so" path="res://assets/space_background.png" id="3_pf22x"]
+[ext_resource type="Texture2D" uid="uid://2amnisf5kg6b" path="res://assets/sprites/space_background.png" id="2_61feb"]
+[ext_resource type="PackedScene" uid="uid://dsx0jrya2ryap" path="res://scenes/hud.tscn" id="3_juajw"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_r454x")
@@ -12,13 +13,15 @@ script = ExtResource("1_r454x")
 
 [node name="AsteroidContainer" type="Node" parent="."]
 
+[node name="HUD" parent="." instance=ExtResource("3_juajw")]
+
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 5.0
 autostart = true
 
 [node name="Background" type="Sprite2D" parent="."]
 z_index = -1
-texture = ExtResource("3_pf22x")
+texture = ExtResource("2_61feb")
 centered = false
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

@@ -68,6 +68,9 @@ func _on_timer_timeout() -> void:
 
 
 func _on_hit() -> void:
+	if is_instance_valid(get_tree().get_first_node_in_group("Ship")):
+		get_tree().get_first_node_in_group("Ship").emit_signal("got_points", 10)
+	
 	if size > 1:
 		var container = self.get_parent()
 		var asteroid = load("res://scenes/asteroid.tscn")

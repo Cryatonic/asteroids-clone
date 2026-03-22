@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://daal6r1h66y8w"]
 
-[ext_resource type="Texture2D" uid="uid://6wg1n25p0qv1" path="res://assets/asteroid-sprite.png" id="1_2iljh"]
 [ext_resource type="Script" path="res://scripts/asteroid.gd" id="1_6rmt4"]
+[ext_resource type="Texture2D" uid="uid://n1uw62eh1dnr" path="res://assets/sprites/asteroid-sprite.png" id="2_4sxe3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_u5d5l"]
 radius = 7.0
@@ -17,7 +17,7 @@ script = ExtResource("1_6rmt4")
 shape = SubResource("CircleShape2D_u5d5l")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_2iljh")
+texture = ExtResource("2_4sxe3")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0

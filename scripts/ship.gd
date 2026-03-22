@@ -5,10 +5,13 @@ class_name Ship
 @onready var spin_damper: Timer = $SpinDamper
 @onready var shoot_cooldown_timer: Timer = $ShootCooldown
 signal hit
+signal got_points
 var bullet_scene = preload("res://scenes/bullet.tscn")
 
 var health : int = 3
 var hull_strength : float = 30000.0 #Joules withstood
+
+var score : int = 0
 
 var thrust_power : int = 3750 #Force/Newtons
 var thrust_limit : int = 250 #pixels/sec
@@ -176,3 +179,7 @@ func _on_hit(impact_body, _delta : float) -> void:
 
 func _on_shoot_cooldown_timeout() -> void:
 	shoot_cooldown[0] = false
+
+
+func _on_got_points(points : int) -> void:
+	score += points

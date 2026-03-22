@@ -1,0 +1,77 @@
+[gd_scene load_steps=8 format=3 uid="uid://dsx0jrya2ryap"]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_d30us"]
+[ext_resource type="FontFile" uid="uid://70hp6ibwasdw" path="res://assets/fonts/PixelOperator8.ttf" id="1_ie5dx"]
+[ext_resource type="Texture2D" uid="uid://2amnisf5kg6b" path="res://assets/sprites/space_background.png" id="2_expdm"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6kj5h"]
+font = ExtResource("1_ie5dx")
+font_size = 64
+
+[sub_resource type="LabelSettings" id="LabelSettings_0ps1j"]
+font = ExtResource("1_ie5dx")
+font_size = 64
+
+[sub_resource type="LabelSettings" id="LabelSettings_nrbh4"]
+font = ExtResource("1_ie5dx")
+font_size = 64
+
+[sub_resource type="LabelSettings" id="LabelSettings_whfjk"]
+font = ExtResource("1_ie5dx")
+font_size = 64
+
+[node name="HUD" type="Control" node_paths=PackedStringArray("score_amount", "health_amount")]
+z_index = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -636.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_d30us")
+score_amount = NodePath("Score/ScoreAmt")
+health_amount = NodePath("Health/HealthAmt")
+
+[node name="Background" type="Sprite2D" parent="."]
+scale = Vector2(1, 0.112857)
+texture = ExtResource("2_expdm")
+centered = false
+
+[node name="Score" type="Label" parent="."]
+layout_mode = 0
+offset_top = 8.0
+offset_right = 320.0
+offset_bottom = 72.0
+text = "Score:"
+label_settings = SubResource("LabelSettings_6kj5h")
+vertical_alignment = 1
+
+[node name="ScoreAmt" type="Label" parent="Score"]
+layout_mode = 0
+offset_left = 320.0
+offset_right = 376.0
+offset_bottom = 64.0
+text = "0"
+label_settings = SubResource("LabelSettings_0ps1j")
+vertical_alignment = 1
+
+[node name="Health" type="Label" parent="."]
+layout_mode = 0
+offset_left = 720.0
+offset_top = 8.0
+offset_right = 1072.0
+offset_bottom = 72.0
+text = "Health:"
+label_settings = SubResource("LabelSettings_nrbh4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HealthAmt" type="Label" parent="Health"]
+layout_mode = 0
+offset_left = 352.0
+offset_right = 408.0
+offset_bottom = 64.0
+text = "0"
+label_settings = SubResource("LabelSettings_whfjk")
+vertical_alignment = 1
