@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://cmysf7mbefxp5"]
+
+[ext_resource type="Script" path="res://scripts/ship.gd" id="1_bk8gr"]
+[ext_resource type="Texture2D" uid="uid://6mqvqn0hwcie" path="res://assets/ship-sprite.png" id="1_tbwfn"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_apmko"]
+radius = 5.0
+height = 22.0
+
+[node name="Ship" type="RigidBody2D"]
+z_index = 1
+collision_mask = 256
+mass = 25.0
+gravity_scale = 0.0
+can_sleep = false
+contact_monitor = true
+max_contacts_reported = 5
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("1_bk8gr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("CapsuleShape2D_apmko")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_tbwfn")
+
+[node name="SpinDamper" type="Timer" parent="."]
+one_shot = true
+
+[node name="ShootCooldown" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="hit" from="." to="." method="_on_hit"]
+[connection signal="timeout" from="SpinDamper" to="." method="_on_spin_damper_timeout"]
+[connection signal="timeout" from="ShootCooldown" to="." method="_on_shoot_cooldown_timeout"]

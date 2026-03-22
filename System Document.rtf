@@ -1,0 +1,50 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Asteroids Clone = a spaceship flies around and shoots asteroids, which may split into two smaller asteroids if large, or destroyed if small. Gains points per asteroid destroyed.\
+\
+TODO:\
+-Fix turning controls so angular velocity tends towards +/- ang vel so once it stops pressing turn it\'92s and velocity is 0.\
+-Make movement tend towards max speed in direction pointing to ease control to make heading in desired direction easier and ensure max speed can only be exceeded by impacts.\
+\
+Ship Components:\
+-Ship Sprite = frames for up to 90* of turning, then using sprite flips for remaining 270*.\
+-Shoot = on click, creates a bullet. Cannot shoot again for 2 seconds.\
+-Health = Ship can survive 2 hits, 3rd destroys.\
+-Controls = rotate ship, shoot button, thrust.\
+	-Thrust/movement may instead move all asteroids/particles instead, with a \'93looping\'94 effect for asteroids outside field of view.\
+\
+Asteroid Components:\
+-Size = up to 4 sizes, and if greater than 1, splits into two smaller asteroids of size 1 less. \
+-Sprite = rotates like ship, and so has frames for up to 90*. \
+-Split Function = breaks into 2 asteroids at -1 size perpendicular to the bullet impact.\
+-Destroy = if shot when at 1 size, breaks apart into small particles and awards points.\
+-Impact = if an asteroid hits ship, bounces ship and deals 1 damage.\
+-Speed = smaller asteroids move faster on average.\
+\
+Bullet Components:\
+-Damage = deals damage to whatever it hits, then disappears.\
+\
+\
+Extra Fluff:\
+-Resource Collection = every destroyed asteroid leaves behind resources. Flying near it picks it up for use.\
+	-Uses: \
+		-Fuel = needed to turn and thrust. = Hydrogen\
+		-Ammo = make bullets = Heavy Metals\
+		-Repairs = heals Health = Titanium\
+		-Research = useful for Upgrades = Misc/TBD\
+	-Production Time = any resource use takes time to complete.\
+-Research = with time and resource, can unlock various upgrades.\
+	-Possible Upgrades: ^ = purchasable multiple times\
+		-Efficient Thrusters^ = use less fuel per movement\
+		-Ammo Production^ = more bullet capacity\
+		-Reloader Arms^ = reduces shoot cooldown\
+		-Dense Munitions^ = bullets can hit multiple targets\
+		-Armour Plating^ = ship can take more hits\
+		-Self Repairing Materials = can repair 1 damage over time. Can only do this once until repaired to full Health\
+		-Explosive Rounds^ = bullet will explode if pass adjacent to asteroid; upgrades increase explosion radius\
+		-Resource Scanner = hovering mouse over asteroid tells what resources it contains}

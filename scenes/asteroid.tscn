@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://daal6r1h66y8w"]
+
+[ext_resource type="Texture2D" uid="uid://6wg1n25p0qv1" path="res://assets/asteroid-sprite.png" id="1_2iljh"]
+[ext_resource type="Script" path="res://scripts/asteroid.gd" id="1_6rmt4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u5d5l"]
+radius = 7.0
+
+[node name="Asteroid" type="RigidBody2D"]
+collision_layer = 256
+collision_mask = 259
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("1_6rmt4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_u5d5l")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_2iljh")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+
+[connection signal="hit" from="." to="." method="_on_hit"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
