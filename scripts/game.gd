@@ -6,6 +6,8 @@ var asteroid_scene = preload("res://scenes/asteroid.tscn")
 var ship_scene = preload("res://scenes/ship.tscn")
 var ship : Ship
 
+var debug_mode : bool = false
+
 @onready var hud: HUD = $HUD
 
 var bounding_box = [-32, 1232, 32, 732] #min x, max x, min y, max y
@@ -31,8 +33,16 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_pressed("data"):
 		print(asteroid_count)
 		
-	elif event.is_action_pressed("respawn") && get_node("ShipContainer").get_child_count() == 0:
+	elif event.is_action_pressed("respawn") && get_node("ShipContainer").get_child_count() == 0 && debug_mode:
 		spawn_ship(Vector2i(bounding_box[1] / 2, bounding_box[3] / 2))
+	elif event.is_action_pressed("respawn"):
+		restart()
+		
+	if Input.is_key_pressed(KEY_SHIFT) && Input.is_key_pressed(KEY_B) && Input.is_key_pressed(KEY_M):
+		if not debug_mode:
+			debug_mode = true
+		else:
+			debug_mode = false
 		
 func spawn_asteroid(spawn_location : Vector2i):
 	var instance = asteroid_scene.instantiate()
@@ -59,6 +69,20 @@ func random_spawn_asteroid():
 			
 	spawn_asteroid(spawn_location)
 	
+func restart() -> void:
+	if get_node("AsteroidContainer").get_child_count() != 0:
+		for each in get_node("AsteroidContainer").get_children():
+			each.queue_free()
+	if get_node("ShipContainer").get_child_count() != 0:
+		for ship in get_node("ShipContainer").get_children():
+			ship.queue_free()
+		
+	await get_tree().process_frame
+	
+	spawn_ship(Vector2i(bounding_box[1] / 2, bounding_box[3] / 2))
+	for x in range(0, 10):
+		random_spawn_asteroid()
+
 func check_bounding() -> void:
 	var asteroids = get_node("AsteroidContainer").get_children()
 	for a in asteroids:
