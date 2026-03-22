@@ -5,7 +5,7 @@ class_name Ship
 @onready var spin_damper: Timer = $SpinDamper
 @onready var shoot_cooldown_timer: Timer = $ShootCooldown
 signal hit
-var bullet_scene = preload("res://bullet.tscn")
+var bullet_scene = preload("res://scenes/bullet.tscn")
 
 var health : int = 3
 var hull_strength : float = 30000.0 #Joules withstood
