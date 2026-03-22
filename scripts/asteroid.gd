@@ -77,10 +77,11 @@ func _on_hit() -> void:
 		container.add_child(instance)
 		instance.mass = mass / mass_ratio
 		instance.set_size(size - 1)
-		instance.linear_velocity = linear_velocity.rotated(PI / 2) * 1.25
-		instance.global_position = global_position
+		instance.linear_velocity = linear_velocity.rotated(PI / 4) * 1.5
+		instance.global_position = global_position + (instance.linear_velocity.normalized() * size)
+		instance.angular_velocity = angular_velocity * 1.5
 		
 		set_size(size - 1)
-		linear_velocity = linear_velocity.rotated(-PI / 2) * 1.25
+		linear_velocity = linear_velocity.rotated(-PI / 4) * 1.5
 	else:
 		queue_free()
