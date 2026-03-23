@@ -25,7 +25,7 @@ var side_thrusting = [false, 0] #thrusting?; -1 = left thrust/turn, 1 = right
 var dampeners_on : bool = false
 var braking : bool = false
 var invuln = [false, 0, 0.75] #invulnerable?; time invulnerable; max time invulnerable in seconds
-var shoot_cooldown = [false, 0.333] #can shoot; shoot cooldown time in seconds
+var shoot_cooldown = [false, 0.2] #can shoot; shoot cooldown time in seconds
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -108,7 +108,7 @@ func stop_straglers() -> void:
 	if angular_velocity < 2 * PI * 0.10:
 		angular_velocity = 0
 
-func bound(bounding_box) -> void:
+func bound(bounding_box : Array) -> void:
 	var out_of_bounds = [false, [0, 0]] #whether any are oob, [x-bound, y-bound]
 	var x_pos = global_position.x
 	var y_pos = global_position.y

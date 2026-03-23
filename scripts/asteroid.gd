@@ -35,7 +35,7 @@ func _process(_delta: float) -> void:
 func _physics_process(_delta: float) -> void:
 	previous_vel = linear_velocity
 
-func bound(bounding_box) -> void:
+func bound(bounding_box : Array) -> void:
 	var out_of_bounds = [false, [0, 0]] #whether any are oob, [x-bound, y-bound]
 	var x_pos = global_position.x
 	var y_pos = global_position.y

@@ -14,6 +14,8 @@ var bounding_box = [-32, 1232, 32, 732] #min x, max x, min y, max y
 @onready var spawn_timer: Timer = $SpawnTimer
 
 func _ready() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	
 	spawn_ship(Vector2i(bounding_box[1] / 2, bounding_box[3] / 2))
 	for x in range(0, 10):
 		random_spawn_asteroid()
@@ -60,12 +62,12 @@ func random_spawn_asteroid():
 		if side == 0:
 			spawn_location = Vector2i(spot, randi_range(bounding_box[2], bounding_box[3]))
 		else:
-			spawn_location = Vector2i(bounding_box[1] - spot, randi_range(bounding_box[2], bounding_box[3]))
+			spawn_location = Vector2i(bounding_box[1] + spot, randi_range(bounding_box[2], bounding_box[3]))
 	else:
 		if side == 2:
-			spawn_location = Vector2i(randi_range(bounding_box[0], bounding_box[1]), spot)
+			spawn_location = Vector2i(randi_range(bounding_box[0], bounding_box[1]), bounding_box[2] + spot)
 		else:
-			spawn_location = Vector2i(randi_range(bounding_box[0], bounding_box[1]), bounding_box[3] - spot)
+			spawn_location = Vector2i(randi_range(bounding_box[0], bounding_box[1]), bounding_box[3] + spot)
 			
 	spawn_asteroid(spawn_location)
 	

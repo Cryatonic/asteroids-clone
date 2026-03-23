@@ -19,7 +19,13 @@ func move(_delta : float):
 func set_init_direction(angle : float):
 	velocity = Vector2(cos(angle), sin(angle)) * bullet_speed
 
-func bound(bounding_box) -> void:
+func bound(bounding_box : Array):
+	var x_pos = global_position.x
+	var y_pos = global_position.y
+	
+	if x_pos < bounding_box[0] || x_pos > bounding_box[1] || y_pos < bounding_box[2] || y_pos > bounding_box[3]:
+		die()
+func bound2(bounding_box : Array) -> void:
 	var out_of_bounds = [false, [0, 0]] #whether any are oob, [x-bound, y-bound]
 	var x_pos = global_position.x
 	var y_pos = global_position.y
