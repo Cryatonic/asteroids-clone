@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://xibixcnpg7pq"]
+
+[ext_resource type="Texture2D" uid="uid://2amnisf5kg6b" path="res://assets/sprites/space_background.png" id="1_qxjo4"]
+[ext_resource type="FontFile" uid="uid://70hp6ibwasdw" path="res://assets/fonts/PixelOperator8.ttf" id="2_t568j"]
+[ext_resource type="Script" path="res://scripts/return_button.gd" id="3_a4o53"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_nhet1"]
+font = ExtResource("2_t568j")
+font_size = 32
+
+[node name="ControlsScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("1_qxjo4")
+centered = false
+
+[node name="ControlsText" type="Label" parent="."]
+layout_mode = 0
+offset_left = 362.0
+offset_top = 64.0
+offset_right = 838.0
+offset_bottom = 411.0
+text = "W = Forward Thrust
+
+A = Turn Left
+
+D = Turn Right
+
+S = Brake
+
+
+U = Restart"
+label_settings = SubResource("LabelSettings_nhet1")
+
+[node name="ReturnButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 514.0
+offset_top = 600.0
+offset_right = 686.0
+offset_bottom = 640.0
+theme_override_fonts/font = ExtResource("2_t568j")
+theme_override_font_sizes/font_size = 32
+text = "Return"
+script = ExtResource("3_a4o53")
+
+[connection signal="pressed" from="ReturnButton" to="ReturnButton" method="_on_pressed"]

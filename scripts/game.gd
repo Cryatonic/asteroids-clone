@@ -74,8 +74,8 @@ func restart() -> void:
 		for each in get_node("AsteroidContainer").get_children():
 			each.queue_free()
 	if get_node("ShipContainer").get_child_count() != 0:
-		for ship in get_node("ShipContainer").get_children():
-			ship.queue_free()
+		for s in get_node("ShipContainer").get_children():
+			s.queue_free()
 		
 	await get_tree().process_frame
 	
@@ -88,8 +88,8 @@ func check_bounding() -> void:
 	for a in asteroids:
 		a.bound(bounding_box)
 	var ships = get_node("ShipContainer").get_children()
-	for ship in ships:
-		ship.bound(bounding_box)
+	for s in ships:
+		s.bound(bounding_box)
 	var bullets = get_node("BulletContainer").get_children()
 	for bullet in bullets:
 		bullet.bound(bounding_box)

@@ -13,11 +13,11 @@ var hull_strength : float = 50000.0 #Joules withstood
 
 var score : int = 0
 
-var thrust_power : int = 3750 #Force/Newtons
+var thrust_power : int = 3750 #Force(Newtons)
 var thrust_limit : int = 250 #pixels/sec
 @onready var previous_vel : Vector2 = linear_velocity
 
-var side_thrust_power : int = 4000 #Force/Newtons
+var side_thrust_power : int = 4000 #Force(Newtons)
 var spin_limit : float = 2 * PI #Radians/sec
 
 var thrusting : bool = false
