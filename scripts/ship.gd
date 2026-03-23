@@ -9,7 +9,7 @@ signal got_points
 var bullet_scene = preload("res://scenes/bullet.tscn")
 
 var health : int = 3
-var hull_strength : float = 30000.0 #Joules withstood
+var hull_strength : float = 50000.0 #Joules withstood
 
 var score : int = 0
 
