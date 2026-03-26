@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cmysf7mbefxp5"]
+[gd_scene load_steps=5 format=3 uid="uid://cmysf7mbefxp5"]
 
 [ext_resource type="Script" path="res://scripts/ship.gd" id="1_bk8gr"]
 [ext_resource type="Texture2D" uid="uid://cu0djpjeme7hg" path="res://assets/sprites/ship-sprite.png" id="2_p8ibe"]
@@ -6,6 +6,16 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_apmko"]
 radius = 5.0
 height = 22.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gr6t1"]
+particle_flag_disable_z = true
+angle_min = 1.07288e-05
+angle_max = 1.07288e-05
+direction = Vector3(0, 1, 0)
+spread = 30.0
+initial_velocity_min = 20.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, 0, 0)
 
 [node name="Ship" type="RigidBody2D" groups=["Ship"]]
 z_index = 1
@@ -31,6 +41,18 @@ one_shot = true
 
 [node name="ShootCooldown" type="Timer" parent="."]
 one_shot = true
+
+[node name="LThrusterParticles" type="GPUParticles2D" parent="."]
+position = Vector2(-6, 11)
+emitting = false
+amount = 40
+process_material = SubResource("ParticleProcessMaterial_gr6t1")
+
+[node name="RThrusterParticles" type="GPUParticles2D" parent="."]
+position = Vector2(6, 11)
+emitting = false
+amount = 40
+process_material = SubResource("ParticleProcessMaterial_gr6t1")
 
 [connection signal="got_points" from="." to="." method="_on_got_points"]
 [connection signal="hit" from="." to="." method="_on_hit"]

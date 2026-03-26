@@ -4,9 +4,12 @@ class_name Ship
 #const TORQUE_RADIUS = 0.8496
 @onready var spin_damper: Timer = $SpinDamper
 @onready var shoot_cooldown_timer: Timer = $ShootCooldown
+@onready var l_thruster_particles: GPUParticles2D = $LThrusterParticles
+@onready var r_thruster_particles: GPUParticles2D = $RThrusterParticles
+
 signal hit
 signal got_points
-var bullet_scene = preload("res://scenes/bullet.tscn")
+var bullet_scene = preload("uid://dvsjyie2tqowj")
 
 var health : int = 3
 var hull_strength : float = 50000.0 #Joules withstood
@@ -47,8 +50,12 @@ func _physics_process(_delta: float) -> void:
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("thrust"):
 		thrusting = true
+		l_thruster_particles.emitting = true
+		r_thruster_particles.emitting = true
 	elif Input.is_action_just_released("thrust"):
 		thrusting = false
+		l_thruster_particles.emitting = false
+		r_thruster_particles.emitting = false
 	
 	if Input.is_action_just_pressed("left_turn") || Input.is_action_just_pressed("right_turn"):
 		side_thrusting[0] = true
