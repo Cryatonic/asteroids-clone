@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://86cv77erdrwm"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dupmy"]
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, 0, 0)
+
+[node name="BreakExplosion" type="GPUParticles2D"]
+emitting = false
+amount = 40
+process_material = SubResource("ParticleProcessMaterial_dupmy")
+one_shot = true
+explosiveness = 1.0

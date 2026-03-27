@@ -2,8 +2,8 @@ extends Node
 
 var game_window : Vector2i = DisplayServer.window_get_size()
 var asteroid_count : int = 0
-var asteroid_scene = preload("res://scenes/asteroid.tscn")
-var ship_scene = preload("res://scenes/ship.tscn")
+var asteroid_scene = preload("uid://daal6r1h66y8w")
+var ship_scene = preload("uid://cmysf7mbefxp5")
 var ship : Ship
 
 var debug_mode : bool = false
@@ -109,4 +109,10 @@ func spawn_ship(spawn_location : Vector2i) -> void:
 func _on_spawn_timer_timeout() -> void:
 	if get_node("AsteroidContainer").get_child_count() > 8 || asteroid_count < 50:
 		random_spawn_asteroid()
-	#pass
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_WM_MOUSE_EXIT:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		NOTIFICATION_WM_MOUSE_ENTER:
+			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN

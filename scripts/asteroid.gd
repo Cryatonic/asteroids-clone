@@ -5,6 +5,7 @@ signal hit
 
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var break_explosion: GPUParticles2D = $BreakExplosion
 
 var size : int = 1
 var previous_vel : Vector2
@@ -68,6 +69,8 @@ func _on_timer_timeout() -> void:
 
 
 func _on_hit() -> void:
+	break_explosion.restart()
+	
 	if is_instance_valid(get_tree().get_first_node_in_group("Ship")):
 		get_tree().get_first_node_in_group("Ship").emit_signal("got_points", 50 - (10 * size))
 	
@@ -87,4 +90,7 @@ func _on_hit() -> void:
 		set_size(size - 1)
 		linear_velocity = linear_velocity.rotated(-PI / 4) * 1.5
 	else:
+		sprite_2d.visible = false
+		collision_shape_2d.set_deferred("disabled", true)
+		await break_explosion.finished
 		queue_free()
