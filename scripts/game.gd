@@ -12,10 +12,14 @@ var debug_mode : bool = false
 
 var bounding_box = [-32, 1232, 32, 732] #min x, max x, min y, max y
 @onready var spawn_timer: Timer = $SpawnTimer
+@onready var cached_asteroids : Array
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	
+	#cache_num_asteroids(50)
+	
+	print(cached_asteroids)
 	spawn_ship(Vector2i(bounding_box[1] / 2, bounding_box[3] / 2))
 	for x in range(0, 10):
 		random_spawn_asteroid()
@@ -104,6 +108,16 @@ func spawn_ship(spawn_location : Vector2i) -> void:
 	get_node("ShipContainer").add_child(ship)
 	ship.global_position = spawn_location
 	hud.update_hud_labels(ship.score, ship.health)
+	
+func cache_num_asteroids(num_cached : int) -> void:
+	if num_cached < 1:
+		return
+	
+	var aster = asteroid_scene.instantiate()
+	for num in range(0,num_cached):
+		cached_asteroids.append(aster)
+		if num < num_cached - 1:
+			aster = asteroid_scene.instantiate()
 
 
 func _on_spawn_timer_timeout() -> void:
