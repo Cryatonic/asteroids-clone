@@ -64,11 +64,8 @@ func bound(bounding_box : Array) -> void:
 		if out_of_bounds[1][1] != 0:
 			global_position.y += y_bound * out_of_bounds[1][1]
 
-func _on_timer_timeout() -> void:
-	pass
-
-
 func _on_hit() -> void:
+	break_explosion.scale = Vector2(size, size)
 	break_explosion.restart()
 	
 	if is_instance_valid(get_tree().get_first_node_in_group("Ship")):

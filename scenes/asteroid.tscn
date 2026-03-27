@@ -20,10 +20,6 @@ shape = SubResource("CircleShape2D_u5d5l")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_4sxe3")
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 5.0
-
 [node name="BreakExplosion" parent="." instance=ExtResource("3_w1e75")]
 
 [connection signal="hit" from="." to="." method="_on_hit"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
