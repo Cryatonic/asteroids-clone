@@ -7,14 +7,13 @@ signal hit
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var break_explosion: GPUParticles2D = $BreakExplosion
 
-var size : int = 1
+var size : int = 0
 var previous_vel : Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	gravity_scale = 0
 	set_size(randi_range(1,4))
-	mass = pow(size, 3) * randf_range(0.8, 1.2)
 	
 	apply_impulse(Vector2(randf_range(-100, 100),randf_range(-100, 100)))
 	angular_velocity = randf_range((-2 * PI), (2 * PI))
@@ -22,9 +21,11 @@ func _ready() -> void:
 	previous_vel = linear_velocity
 	
 func set_size(s : int) -> void:
-	#var s_scale = s / size
-	#collision_shape_2d.apply_scale(Vector2(s_scale, s_scale))
-	#sprite_2d.apply_scale(Vector2(s_scale, s_scale))
+	if size == 0:
+		mass = pow(s, 3) * randf_range(0.8, 1.2)
+	else:
+		mass /= pow(float(size) / s, 3)
+	
 	size = s
 	collision_shape_2d.scale = Vector2(s, s)
 	sprite_2d.scale = Vector2(s, s)
@@ -71,23 +72,31 @@ func _on_hit() -> void:
 	if is_instance_valid(get_tree().get_first_node_in_group("Ship")):
 		get_tree().get_first_node_in_group("Ship").emit_signal("got_points", 50 - (10 * size))
 	
+	var game_scene : Game = $"../../"
 	if size > 1:
-		var container = self.get_parent()
-		var asteroid = load("res://scenes/asteroid.tscn")
-		var instance = asteroid.instantiate()
-		var mass_ratio = pow(float(size) / (size - 1), 3)
+		#var container = self.get_parent()
+		#var asteroid = load("res://scenes/asteroid.tscn")
+		#var instance = asteroid.instantiate()
+		#var mass_ratio = pow(float(size) / (size - 1), 3)
+		#
+		#container.add_child(instance)
+		#instance.mass = mass / mass_ratio
+		#instance.set_size(size - 1)
+		#instance.linear_velocity = linear_velocity.rotated(PI / 4) * 1.5
+		#instance.global_position = global_position + (instance.linear_velocity.normalized() * size * 8)
+		#instance.angular_velocity = angular_velocity * 1.5
+		#
+		#set_size(size - 1)
+		#linear_velocity = linear_velocity.rotated(-PI / 4) * 1.5
 		
-		container.add_child(instance)
-		instance.mass = mass / mass_ratio
-		instance.set_size(size - 1)
-		instance.linear_velocity = linear_velocity.rotated(PI / 4) * 1.5
-		instance.global_position = global_position + (instance.linear_velocity.normalized() * size)
-		instance.angular_velocity = angular_velocity * 1.5
+		game_scene.spawn_asteroid(global_position, size - 1, linear_velocity.rotated(PI / 4) * 1.5, angular_velocity * 1.5)
+		game_scene.spawn_asteroid(global_position, size - 1, linear_velocity.rotated(-PI / 4) * 1.5, angular_velocity * 1.5)
+	#else:
+		##sprite_2d.visible = false
+		##collision_shape_2d.set_deferred("disabled", true)
+		#await break_explosion.finished
+		##queue_free()
 		
-		set_size(size - 1)
-		linear_velocity = linear_velocity.rotated(-PI / 4) * 1.5
-	else:
-		sprite_2d.visible = false
-		collision_shape_2d.set_deferred("disabled", true)
-		await break_explosion.finished
-		queue_free()
+	sprite_2d.visible = false
+	collision_shape_2d.set_deferred("disabled", true)
+	game_scene.emit_signal("cache_asteroid", self)

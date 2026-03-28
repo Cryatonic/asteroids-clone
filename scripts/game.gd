@@ -1,4 +1,7 @@
 extends Node
+class_name Game
+
+signal cache_asteroid(ast : Asteroid)
 
 var game_window : Vector2i = DisplayServer.window_get_size()
 var asteroid_count : int = 0
@@ -12,14 +15,12 @@ var debug_mode : bool = false
 
 var bounding_box = [-32, 1232, 32, 732] #min x, max x, min y, max y
 @onready var spawn_timer: Timer = $SpawnTimer
-@onready var cached_asteroids : Array
+@onready var cached_asteroids : Array[Asteroid]
+@onready var used_asteroids : Array[Asteroid]
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	
-	#cache_num_asteroids(50)
-	
-	print(cached_asteroids)
 	spawn_ship(Vector2i(bounding_box[1] / 2, bounding_box[3] / 2))
 	for x in range(0, 10):
 		random_spawn_asteroid()
@@ -50,7 +51,29 @@ func _input(event: InputEvent) -> void:
 		else:
 			debug_mode = false
 		
-func spawn_asteroid(spawn_location : Vector2i):
+func spawn_asteroid(spawn_location : Vector2i, size = null, lin_velocity = null, ang_velocity = null):
+	var instance : Asteroid
+	if cached_asteroids.is_empty():
+		instance = asteroid_scene.instantiate()
+	else:
+		instance = cached_asteroids.pop_front()
+		instance.sprite_2d.visible = true
+		instance.collision_shape_2d.set_deferred("disabled", false)
+	get_node("AsteroidContainer").add_child(instance)
+	
+	if size != null:
+		instance.set_size(size)
+	
+	if lin_velocity != null:
+		instance.linear_velocity
+		
+	if ang_velocity != null:
+		instance.angular_velocity = ang_velocity
+	
+	used_asteroids.append(instance)
+	instance.global_position = spawn_location
+	asteroid_count += 1
+func spawn_asteroid2(spawn_location : Vector2i):
 	var instance = asteroid_scene.instantiate()
 	get_node("AsteroidContainer").add_child(instance)
 	instance.global_position = spawn_location
@@ -130,3 +153,8 @@ func _notification(what: int) -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		NOTIFICATION_WM_MOUSE_ENTER:
 			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+
+
+func _on_cache_asteroid(ast: Asteroid) -> void:
+	var ast_index : int = used_asteroids.find(ast)
+	cached_asteroids.append(used_asteroids.pop_at(ast_index))
