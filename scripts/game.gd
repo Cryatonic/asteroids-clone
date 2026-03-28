@@ -21,8 +21,9 @@ var bounding_box = [-32, 1232, 32, 732] #min x, max x, min y, max y
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	
+	#cache_num_asteroids(5)
 	spawn_ship(Vector2i(bounding_box[1] / 2, bounding_box[3] / 2))
-	for x in range(0, 10):
+	for x in range(0, 0):
 		random_spawn_asteroid()
 
 func _process(_delta: float) -> void:
@@ -33,7 +34,7 @@ func _process(_delta: float) -> void:
 		hud.update_hud_health(0)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("spawn_asteroid"):
+	if event.is_action_pressed("spawn_asteroid") && debug_mode:
 		var spawn_location = event.position
 		spawn_asteroid(spawn_location)
 		
@@ -48,30 +49,42 @@ func _input(event: InputEvent) -> void:
 	if Input.is_key_pressed(KEY_SHIFT) && Input.is_key_pressed(KEY_B) && Input.is_key_pressed(KEY_M):
 		if not debug_mode:
 			debug_mode = true
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		else:
 			debug_mode = false
+			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 		
-func spawn_asteroid(spawn_location : Vector2i, size = null, lin_velocity = null, ang_velocity = null):
+func spawn_asteroid(spawn_location : Vector2i, size = null, pre_mass = null, lin_velocity = null, ang_velocity = null):
 	var instance : Asteroid
 	if cached_asteroids.is_empty():
 		instance = asteroid_scene.instantiate()
+		await instance._ready
 	else:
 		instance = cached_asteroids.pop_front()
-		instance.sprite_2d.visible = true
-		instance.collision_shape_2d.set_deferred("disabled", false)
 	get_node("AsteroidContainer").add_child(instance)
 	
 	if size != null:
-		instance.set_size(size)
+		instance.set_size(size, pre_mass)
+	else:
+		instance.size = 0
+		instance.set_size(randi_range(1,4), 0)
 	
 	if lin_velocity != null:
-		instance.linear_velocity
-		
+		instance.linear_velocity = lin_velocity
+	else:
+		instance.apply_impulse(Vector2(randf_range(-100, 100),randf_range(-100, 100)))
+	instance.previous_vel = instance.linear_velocity
+	
 	if ang_velocity != null:
 		instance.angular_velocity = ang_velocity
+	else:
+		instance.angular_velocity = randf_range((-2 * PI), (2 * PI))
 	
 	used_asteroids.append(instance)
 	instance.global_position = spawn_location
+	instance.sprite_2d.visible = true
+	instance.collision_shape_2d.set_deferred("disabled", false)
+	
 	asteroid_count += 1
 func spawn_asteroid2(spawn_location : Vector2i):
 	var instance = asteroid_scene.instantiate()
@@ -136,25 +149,37 @@ func cache_num_asteroids(num_cached : int) -> void:
 	if num_cached < 1:
 		return
 	
-	var aster = asteroid_scene.instantiate()
+	var aster : Asteroid = asteroid_scene.instantiate()
+	
 	for num in range(0,num_cached):
+		aster.global_position = Vector2i(bounding_box[1] / 2, bounding_box[3] / 2)
+		aster.size = 0
+		aster.linear_velocity = Vector2.ZERO
+		aster.angular_velocity = 0
 		cached_asteroids.append(aster)
 		if num < num_cached - 1:
 			aster = asteroid_scene.instantiate()
 
 
 func _on_spawn_timer_timeout() -> void:
-	if get_node("AsteroidContainer").get_child_count() > 8 || asteroid_count < 50:
-		random_spawn_asteroid()
+	if used_asteroids.size() > 8 || asteroid_count < 50:
+		#random_spawn_asteroid()
+		pass
 
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_WM_MOUSE_EXIT:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		NOTIFICATION_WM_MOUSE_ENTER:
-			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+			if not debug_mode:
+				Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
 
 func _on_cache_asteroid(ast: Asteroid) -> void:
+	ast.linear_velocity = Vector2.ZERO
+	ast.global_position = Vector2i(bounding_box[1] / 2, bounding_box[3] / 2)
+	ast.angular_velocity = 0
+	
 	var ast_index : int = used_asteroids.find(ast)
 	cached_asteroids.append(used_asteroids.pop_at(ast_index))
+	get_node("AsteroidContainer").remove_child(ast)

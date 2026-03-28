@@ -13,18 +13,21 @@ var previous_vel : Vector2
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	gravity_scale = 0
-	set_size(randi_range(1,4))
+	#set_size(randi_range(1,4))
+	#
+	#apply_impulse(Vector2(randf_range(-100, 100),randf_range(-100, 100)))
+	#angular_velocity = randf_range((-2 * PI), (2 * PI))
+	#
+	#previous_vel = linear_velocity
 	
-	apply_impulse(Vector2(randf_range(-100, 100),randf_range(-100, 100)))
-	angular_velocity = randf_range((-2 * PI), (2 * PI))
+	sprite_2d.visible = false
+	collision_shape_2d.set_deferred("disabled", true)
 	
-	previous_vel = linear_velocity
-	
-func set_size(s : int) -> void:
-	if size == 0:
+func set_size(s : int, m : float) -> void:
+	if size == 0 && m == 0:
 		mass = pow(s, 3) * randf_range(0.8, 1.2)
 	else:
-		mass /= pow(float(size) / s, 3)
+		mass = m / pow(float(size) / s, 3)
 	
 	size = s
 	collision_shape_2d.scale = Vector2(s, s)
@@ -89,8 +92,8 @@ func _on_hit() -> void:
 		#set_size(size - 1)
 		#linear_velocity = linear_velocity.rotated(-PI / 4) * 1.5
 		
-		game_scene.spawn_asteroid(global_position, size - 1, linear_velocity.rotated(PI / 4) * 1.5, angular_velocity * 1.5)
-		game_scene.spawn_asteroid(global_position, size - 1, linear_velocity.rotated(-PI / 4) * 1.5, angular_velocity * 1.5)
+		game_scene.spawn_asteroid(global_position, size - 1, mass, linear_velocity.rotated(PI / 4) * 1.5, angular_velocity * 1.5)
+		game_scene.spawn_asteroid(global_position, size - 1, mass, linear_velocity.rotated(-PI / 4) * 1.5, angular_velocity * 1.5)
 	#else:
 		##sprite_2d.visible = false
 		##collision_shape_2d.set_deferred("disabled", true)
@@ -99,4 +102,6 @@ func _on_hit() -> void:
 		
 	sprite_2d.visible = false
 	collision_shape_2d.set_deferred("disabled", true)
+	await break_explosion.finished
+	
 	game_scene.emit_signal("cache_asteroid", self)
