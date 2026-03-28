@@ -12,14 +12,10 @@ var debug_mode : bool = false
 
 var bounding_box = [-32, 1232, 32, 732] #min x, max x, min y, max y
 @onready var spawn_timer: Timer = $SpawnTimer
-@onready var cached_asteroids : Array
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	
-	#cache_num_asteroids(50)
-	
-	print(cached_asteroids)
 	spawn_ship(Vector2i(bounding_box[1] / 2, bounding_box[3] / 2))
 	for x in range(0, 10):
 		random_spawn_asteroid()
@@ -32,7 +28,7 @@ func _process(_delta: float) -> void:
 		hud.update_hud_health(0)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("spawn_asteroid"):
+	if event.is_action_pressed("spawn_asteroid") && debug_mode:
 		var spawn_location = event.position
 		spawn_asteroid(spawn_location)
 		
@@ -47,8 +43,10 @@ func _input(event: InputEvent) -> void:
 	if Input.is_key_pressed(KEY_SHIFT) && Input.is_key_pressed(KEY_B) && Input.is_key_pressed(KEY_M):
 		if not debug_mode:
 			debug_mode = true
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		else:
 			debug_mode = false
+			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 		
 func spawn_asteroid(spawn_location : Vector2i):
 	var instance = asteroid_scene.instantiate()
@@ -109,17 +107,6 @@ func spawn_ship(spawn_location : Vector2i) -> void:
 	ship.global_position = spawn_location
 	hud.update_hud_labels(ship.score, ship.health)
 	
-func cache_num_asteroids(num_cached : int) -> void:
-	if num_cached < 1:
-		return
-	
-	var aster = asteroid_scene.instantiate()
-	for num in range(0,num_cached):
-		cached_asteroids.append(aster)
-		if num < num_cached - 1:
-			aster = asteroid_scene.instantiate()
-
-
 func _on_spawn_timer_timeout() -> void:
 	if get_node("AsteroidContainer").get_child_count() > 8 || asteroid_count < 50:
 		random_spawn_asteroid()
@@ -129,4 +116,5 @@ func _notification(what: int) -> void:
 		NOTIFICATION_WM_MOUSE_EXIT:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		NOTIFICATION_WM_MOUSE_ENTER:
-			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+			if not debug_mode:
+				Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
