@@ -20,7 +20,7 @@ var thrust_power : int = 3750 #Force(Newtons)
 var thrust_limit : int = 250 #pixels/sec
 @onready var previous_vel : Vector2 = linear_velocity
 
-var side_thrust_power : int = 4000 #Force(Newtons)
+var side_thrust_power : int = 8000 #Force(Newtons)
 var spin_limit : float = 2 * PI #Radians/sec
 
 var thrusting : bool = false
@@ -173,15 +173,18 @@ func _on_spin_damper_timeout() -> void:
 func _on_hit(impact_body, _delta : float) -> void:
 	angular_damp = 0
 	dampeners_on = false
-	if not invuln[0]:
-		if impact_body is RigidBody2D:
-			var net_vel = impact_body.previous_vel - previous_vel
-			var impact_ke : Vector2 = 0.5 * (impact_body.mass + mass) * net_vel * net_vel
-			if (impact_ke).length() > hull_strength:
-				health -= 1
-				if health == 0:
-					queue_free()
-			invuln[0] = true
+	
+	if invuln[0]:
+		return
+	elif impact_body is RigidBody2D:
+		var net_vel = impact_body.previous_vel - previous_vel
+		var impact_ke : Vector2 = 0.5 * (impact_body.mass + mass) * net_vel * net_vel
+		
+		if (impact_ke).length() > hull_strength:
+			health -= 1
+			if health == 0:
+				queue_free()
+		invuln[0] = true
 
 
 func _on_shoot_cooldown_timeout() -> void:

@@ -73,7 +73,7 @@ func _on_hit() -> void:
 	
 	if size > 1:
 		var container = self.get_parent()
-		var asteroid = load("res://scenes/asteroid.tscn")
+		var asteroid = load("uid://daal6r1h66y8w")
 		var instance = asteroid.instantiate()
 		var mass_ratio = pow(float(size) / (size - 1), 3)
 		
