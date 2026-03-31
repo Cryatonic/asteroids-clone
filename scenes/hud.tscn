@@ -72,6 +72,7 @@ layout_mode = 0
 offset_left = 352.0
 offset_right = 408.0
 offset_bottom = 64.0
+pivot_offset = Vector2(28, 32)
 text = "0"
 label_settings = SubResource("LabelSettings_whfjk")
 vertical_alignment = 1
