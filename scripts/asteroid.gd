@@ -22,16 +22,13 @@ func _ready() -> void:
 	previous_vel = linear_velocity
 	
 func set_size(s : int) -> void:
-	#var s_scale = s / size
-	#collision_shape_2d.apply_scale(Vector2(s_scale, s_scale))
-	#sprite_2d.apply_scale(Vector2(s_scale, s_scale))
 	size = s
 	collision_shape_2d.scale = Vector2(s, s)
 	sprite_2d.scale = Vector2(s, s)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	pass#bound()
+	pass
 	
 func _physics_process(_delta: float) -> void:
 	previous_vel = linear_velocity

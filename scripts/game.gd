@@ -1,5 +1,8 @@
 extends Node
 
+signal got_points(score : int, points : int)
+signal got_hit(health_remaining : int)
+
 var game_window : Vector2i = DisplayServer.window_get_size()
 var asteroid_count : int = 0
 var asteroid_scene = preload("uid://daal6r1h66y8w")
@@ -22,10 +25,6 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	check_bounding()
-	if is_instance_valid(ship):
-		hud.update_hud_labels(ship.score, ship.health)
-	else:
-		hud.update_hud_health(0)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("spawn_asteroid") && debug_mode:
@@ -105,7 +104,7 @@ func spawn_ship(spawn_location : Vector2i) -> void:
 	ship = ship_scene.instantiate()
 	get_node("ShipContainer").add_child(ship)
 	ship.global_position = spawn_location
-	hud.update_hud_labels(ship.score, ship.health)
+	hud.update_hud_labels(ship.score, 0, ship.health)
 	
 func _on_spawn_timer_timeout() -> void:
 	if get_node("AsteroidContainer").get_child_count() > 8 || asteroid_count < 50:
@@ -118,3 +117,10 @@ func _notification(what: int) -> void:
 		NOTIFICATION_WM_MOUSE_ENTER:
 			if not debug_mode:
 				Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+
+
+func _on_got_points(score : int, points: int) -> void:
+	hud.update_hud_score(score, points)
+
+func _on_got_hit(health_remaining : int) -> void:
+	hud.update_hud_health(health_remaining)

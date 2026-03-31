@@ -182,6 +182,7 @@ func _on_hit(impact_body, _delta : float) -> void:
 		
 		if (impact_ke).length() > hull_strength:
 			health -= 1
+			$"../../".emit_signal("got_hit", health)
 			if health == 0:
 				queue_free()
 		invuln[0] = true
@@ -192,4 +193,5 @@ func _on_shoot_cooldown_timeout() -> void:
 
 
 func _on_got_points(points : int) -> void:
+	$"../../".emit_signal("got_points", score, points)
 	score += points

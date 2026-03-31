@@ -24,4 +24,6 @@ z_index = -1
 texture = ExtResource("2_61feb")
 centered = false
 
+[connection signal="got_hit" from="." to="." method="_on_got_hit"]
+[connection signal="got_points" from="." to="." method="_on_got_points"]
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
