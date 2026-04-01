@@ -6,6 +6,7 @@ signal hit
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var break_explosion: GPUParticles2D = $BreakExplosion
+@onready var break_sound: AudioStreamPlayer2D = $BreakSound
 
 var size : int = 1
 var previous_vel : Vector2
@@ -64,6 +65,7 @@ func bound(bounding_box : Array) -> void:
 func _on_hit() -> void:
 	break_explosion.scale = Vector2(size, size)
 	break_explosion.restart()
+	break_sound.play()
 	
 	if is_instance_valid(get_tree().get_first_node_in_group("Ship")):
 		get_tree().get_first_node_in_group("Ship").emit_signal("got_points", 50 - (10 * size))

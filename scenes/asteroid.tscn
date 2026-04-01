@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://daal6r1h66y8w"]
+[gd_scene load_steps=6 format=3 uid="uid://daal6r1h66y8w"]
 
 [ext_resource type="Script" path="res://scripts/asteroid.gd" id="1_6rmt4"]
 [ext_resource type="Texture2D" uid="uid://n1uw62eh1dnr" path="res://assets/sprites/asteroid-sprite.png" id="2_4sxe3"]
 [ext_resource type="PackedScene" uid="uid://86cv77erdrwm" path="res://scenes/break_explosion.tscn" id="3_w1e75"]
+[ext_resource type="AudioStream" uid="uid://b57gm3gcmvdmj" path="res://assets/audio/Break.wav" id="4_fibda"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_u5d5l"]
 radius = 7.0
@@ -21,5 +22,8 @@ shape = SubResource("CircleShape2D_u5d5l")
 texture = ExtResource("2_4sxe3")
 
 [node name="BreakExplosion" parent="." instance=ExtResource("3_w1e75")]
+
+[node name="BreakSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_fibda")
 
 [connection signal="hit" from="." to="." method="_on_hit"]

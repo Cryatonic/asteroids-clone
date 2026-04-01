@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cmysf7mbefxp5"]
+[gd_scene load_steps=6 format=3 uid="uid://cmysf7mbefxp5"]
 
 [ext_resource type="Script" path="res://scripts/ship.gd" id="1_bk8gr"]
 [ext_resource type="Texture2D" uid="uid://cu0djpjeme7hg" path="res://assets/sprites/ship-sprite.png" id="2_p8ibe"]
+[ext_resource type="AudioStream" uid="uid://ce53iae8q5adr" path="res://assets/audio/Shoot1.wav" id="3_e3kva"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_apmko"]
 radius = 5.0
@@ -53,6 +54,12 @@ position = Vector2(6, 11)
 emitting = false
 amount = 40
 process_material = SubResource("ParticleProcessMaterial_gr6t1")
+
+[node name="ShipSounds" type="Node" parent="."]
+
+[node name="ShipShoot" type="AudioStreamPlayer2D" parent="ShipSounds"]
+stream = ExtResource("3_e3kva")
+volume_db = -15.0
 
 [connection signal="got_points" from="." to="." method="_on_got_points"]
 [connection signal="hit" from="." to="." method="_on_hit"]

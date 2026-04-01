@@ -6,6 +6,7 @@ class_name Ship
 @onready var shoot_cooldown_timer: Timer = $ShootCooldown
 @onready var l_thruster_particles: GPUParticles2D = $LThrusterParticles
 @onready var r_thruster_particles: GPUParticles2D = $RThrusterParticles
+@onready var ship_shoot: AudioStreamPlayer2D = $ShipSounds/ShipShoot
 
 signal hit
 signal got_points
@@ -77,6 +78,7 @@ func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("shoot"):
 		if not shoot_cooldown[0]:
 			shoot()
+			ship_shoot.play()
 			shoot_cooldown_timer.start(shoot_cooldown[1])
 			shoot_cooldown[0] = true
 		
