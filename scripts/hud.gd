@@ -27,10 +27,10 @@ func update_hud_health(health : int):
 	health_size_tween.tween_property(health_amount, "scale", Vector2.ONE, 0.5)
 	
 	reset_tween(health_jiggle_tween)
-	health_jiggle_tween.tween_property(health_amount, "rotation", PI / 18, 0.15)
-	health_jiggle_tween.tween_property(health_amount, "rotation", -PI / 18, 0.15)
-	health_jiggle_tween.tween_property(health_amount, "rotation", PI / 18, 0.15)
-	health_jiggle_tween.tween_property(health_amount, "rotation", -PI / 18, 0.15)
+	health_jiggle_tween.tween_property(health_amount, "rotation", PI / 9, 0.15)
+	health_jiggle_tween.tween_property(health_amount, "rotation", -PI / 9, 0.15)
+	health_jiggle_tween.tween_property(health_amount, "rotation", PI / 9, 0.15)
+	health_jiggle_tween.tween_property(health_amount, "rotation", -PI / 9, 0.15)
 	health_jiggle_tween.tween_property(health_amount, "rotation", 0, 0.15)
 	
 func update_hud_score(score : int, points : int):
