@@ -31,6 +31,8 @@ var braking : bool = false
 var invuln = [false, 0, 0.75] #invulnerable?; time invulnerable; max time invulnerable in seconds
 var shoot_cooldown = [false, 0.2] #can shoot; shoot cooldown time in seconds
 
+var alive : bool = true
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
@@ -49,6 +51,9 @@ func _physics_process(_delta: float) -> void:
 	previous_vel = linear_velocity
 
 func _input(_event: InputEvent) -> void:
+	if not alive:
+		return
+	
 	if Input.is_action_just_pressed("thrust"):
 		thrusting = true
 		l_thruster_particles.emitting = true
@@ -176,7 +181,7 @@ func _on_hit(impact_body, _delta : float) -> void:
 	angular_damp = 0
 	dampeners_on = false
 	
-	if invuln[0]:
+	if invuln[0] || not alive:
 		return
 	elif impact_body is RigidBody2D:
 		var net_vel = impact_body.previous_vel - previous_vel
@@ -186,9 +191,17 @@ func _on_hit(impact_body, _delta : float) -> void:
 			health -= 1
 			$"../../".emit_signal("got_hit", health)
 			if health == 0:
-				queue_free()
+				die()
 		invuln[0] = true
-
+func die() -> void:
+	alive = false
+	angular_damp = 0
+	dampeners_on = false
+	braking = false
+	side_thrusting[0] = false
+	thrusting = false
+	l_thruster_particles.emitting = false
+	r_thruster_particles.emitting = false
 
 func _on_shoot_cooldown_timeout() -> void:
 	shoot_cooldown[0] = false
